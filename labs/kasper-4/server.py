@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, Response, request, render_template
 from blinkt import set_clear_on_exit, set_pixel, show
 import time
 import json
@@ -15,13 +15,13 @@ def get_temp():
     file = open("/sys/class/thermal/thermal_zone0/temp")
     data = file.read().rstrip()  # remove trailing '\n' newline character.
     file.close()
-    return round(data / 1000, 2)
+    return round(int(data) / 1000, 2)
 
 
 @app.route('/', methods=['GET'])
 def home():
     payload = json.dumps({"temperature": get_temp()})
-    return payload
+    return Response(payload, mimetype='application/json')
 
 if __name__ == '__main__':
 
