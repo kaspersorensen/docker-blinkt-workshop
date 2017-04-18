@@ -5,6 +5,13 @@ import json
 
 app = Flask(__name__)
 
+red = (255, 0, 0)
+green = (0, 255, 0)
+blue = (0, 255, 0)
+yellow = (255, 255, 0)
+pink = (255, 0, 255)
+cyan = (0, 255, 255)
+
 
 def get_temp():
     file = open("/sys/class/thermal/thermal_zone0/temp")
@@ -13,17 +20,21 @@ def get_temp():
     return round(int(data) / 1000, 2)
 
 
+def set_pixel_color(i, color):
+    set_pixel(i, color[0], color[1], color[2])
+
+
 @app.route('/', methods=['GET'])
 def home():
     temperature = get_temp()
     for i in range(0, 8):
         aboveThirty = temperature - 30
         if aboveThirty == i:
-            set_pixel(i, 255, 0, 0)
+            set_pixel_color(i, pink)
         elif aboveThirty > i:
-            set_pixel(i, 0, 0, 255)
+            set_pixel_color(i, yellow)
         else:
-            set_pixel(i, 0, 255, 0)
+            set_pixel_color(i, cyan)
     show()
     payload = json.dumps({"temperature": temperature})
     return Response(payload, mimetype='application/json')
