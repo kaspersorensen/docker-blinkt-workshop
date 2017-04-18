@@ -28,13 +28,13 @@ def set_pixel_color(i, color):
 def home():
     temperature = get_temp()
     for i in range(0, 8):
-        aboveThirty = temperature - 30
+        aboveThirty = temperature - 32
         if aboveThirty == i:
-            set_pixel_color(i, pink)
-        elif aboveThirty > i:
             set_pixel_color(i, yellow)
+        elif aboveThirty > i:
+            set_pixel_color(i, red)
         else:
-            set_pixel_color(i, cyan)
+            set_pixel_color(i, blue)
     show()
     payload = json.dumps({"temperature": temperature})
     return Response(payload, mimetype='application/json')
