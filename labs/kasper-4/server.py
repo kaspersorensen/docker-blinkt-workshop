@@ -7,8 +7,8 @@ app = Flask(__name__)
 
 red = (255, 0, 0)
 green = (0, 255, 0)
-blue = (0, 255, 0)
-yellow = (255, 255, 0)
+blue = (0, 0, 255)
+yellow = (255, 190, 0)
 pink = (255, 0, 255)
 cyan = (0, 255, 255)
 
@@ -30,10 +30,13 @@ def home():
     for i in range(0, 8):
         aboveThirty = temperature - 32
         if aboveThirty == i:
+            # mark
             set_pixel_color(i, yellow)
         elif aboveThirty > i:
+            # warm
             set_pixel_color(i, red)
         else:
+            # cold
             set_pixel_color(i, blue)
     show()
     payload = json.dumps({"temperature": temperature})
